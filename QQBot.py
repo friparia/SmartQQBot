@@ -10,6 +10,7 @@ import time
 import threading
 import logging
 import ConfigParser
+import MyReply
 from HttpClient import HttpClient
 
 reload(sys)
@@ -464,10 +465,10 @@ class check_msg(threading.Thread):
 class pmchat_thread(threading.Thread):
 
     replys = [
-        '对话激活，请输入第一项：',
-        '第一项输入完毕，输入2：',
-        '2输完，输3：',
-        '输完了',
+        '你别蠢了',
+        'sb',
+        '哦',
+        '你妈炸了',
     ]
     inputs = []
     # con = threading.Condition()
@@ -499,14 +500,9 @@ class pmchat_thread(threading.Thread):
             return False
 
         if msgid != self.lastMsgId:
-            self.reply(self.replys[self.stage])
+            self.reply(MyReply.reply(ipContent))
             self.inputs.append(ipContent)
             logging.info(str(self.tqq) + " :" + str(ipContent))
-            self.stage += 1
-            if self.stage == len(self.replys):
-                self.reply(self.inputs)
-                self.stage = 0
-                self.inputs = []
         else:
             logging.info("pm message repeat detected.")
         self.lastMsgId = msgid
